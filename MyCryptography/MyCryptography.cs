@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.Buffers.Text;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using WeCantSpell.Hunspell;
@@ -22,35 +23,36 @@ namespace MyCryptography
     public class MonoAlphabeticSubstitutionCipher : Cipher
     {
         int[] Key;
-        float[] fq = new float[]
+        double[] fq = new double[]
         {
-            0.08167f,
-            0.01492f,
-            0.02782f,
-            0.04253f,
-            0.12702f,
-            0.02228f,
-            0.02015f,
-            0.06094f,
-            0.06966f,
-            0.00153f,
-            0.00772f,
-            0.04025f,
-            0.02406f,
-            0.06749f,
-            0.07507f,
-            0.01929f,
-            0.00095f,
-            0.05987f,
-            0.06327f,
-            0.09056f,
-            0.02758f,
-            0.00978f,
-            0.02360f,
-            0.00150f,
-            0.01974f,
-            0.00074f,
-        };             
+            0.08167d,
+            0.01492d,
+            0.02782d,
+            0.04253d,
+            0.12702d,
+            0.02228d,
+            0.02015d,
+            0.06094d,
+            0.06966d,
+            0.00153d,
+            0.00772d,
+            0.04025d,
+            0.02406d,
+            0.06749d,
+            0.07507d,
+            0.01929d,
+            0.00095d,
+            0.05987d,
+            0.06327d,
+            0.09056d,
+            0.02758d,
+            0.00978d,
+            0.02360d,
+            0.00150d,
+            0.01974d,
+            0.00074d,
+        };
+        const double MAXFQERROR = 0.0001d;
         public MonoAlphabeticSubstitutionCipher()
         {
             int[] chars = new int['z' - 'a' + 1];
@@ -145,37 +147,79 @@ namespace MyCryptography
             }
             output.Add("");
 
-            int[] predictionkey = new int[Key.Length];
-            bool[] basefound = new bool[fq.Length];
-            bool[] newfqfound = new bool[currentfq.Length];
+            List<int[]> predictionkeys = Predict(currentfq);
 
-            for(int basefq = 0; basefq < fq.Length; basefq++)
-            {
-                if (basefound[basefq])
-                    continue;
-                float bestdist = float.MaxValue;
-                int bestidx = -1;
-                for(int newfq = 0; newfq < currentfq.Length; newfq++)
-                {
-                    if (newfqfound[newfq])
-                        continue;                   
-                    float dist = fq[basefq] - currentfq[newfq];
-                    dist = Math.Abs(dist);
-                    if (dist < bestdist)
-                    {
-                        bestidx = newfq;
-                        bestdist = dist;
-                    }
-                        
-                }
-                predictionkey[basefq] = bestidx + 'a';
-                basefound[basefq] = true;
-                newfqfound[bestidx] = true;
+            foreach (int[] pkey in predictionkeys)
+            {               
+                output.Add(Decrypt(text, pkey));
             }
-
-            output.Add(Decrypt(text, predictionkey));
+                
 
             return new CryptoAnalysisResult(typeof(MonoAlphabeticSubstitutionCipher), output);
+        }
+        List<int[]> Predict(float[] currentfq)
+        {
+            List<int[]> output = new List<int[]>();
+            List<int> prediction = new List<int>();
+            List<int> basefqleft = new List<int>();
+            List<int> currentfqleft = new List<int>();
+            for (int i = 0; i < fq.Length; i++)
+            {
+                basefqleft.Add(i);
+                currentfqleft.Add(i);
+            }
+            RecursivePredict(ref output, prediction, 0, currentfqleft, currentfq);
+            return output;
+            
+        }
+        void RecursivePredict(ref List<int[]> output, List<int> currentpred,int idx , List<int> currentfqleft, float[] currentfq)
+        {
+            if (idx >= 'z' - 'a' + 1)
+            {
+                int[] key = new int[currentpred.Count];
+                for(int i = 0; i < currentpred.Count; i++)
+                {
+                    key[i] = currentpred[i] + 'a';
+                }
+                output.Add(key);
+                return;
+            }
+
+            List<int> nextgen = new List<int>();
+            double bestdist = double.MaxValue;
+            for(int j = 0; j < currentfqleft.Count; j++)
+            {
+                double dist = fq[idx] - currentfq[currentfqleft[j]];
+                dist = Math.Abs(dist);
+                if (dist < bestdist)
+                {
+                    bestdist = dist;
+                }             
+            }
+
+            for (int j = 0; j < currentfqleft.Count; j++)
+            {
+                double dist = fq[idx] - currentfq[currentfqleft[j]];
+                dist = Math.Abs(dist);
+                if (dist < bestdist + MAXFQERROR)
+                {
+                    nextgen.Add(currentfqleft[j]);
+                }
+            }
+
+            foreach(int next in nextgen)
+            {
+                List<int> newpred = new List<int>();
+                foreach(int left in currentpred)
+                    newpred.Add(left);
+                List<int> nextcurrentleft = new List<int>();
+                foreach(int left in currentfqleft)
+                    nextcurrentleft.Add(left);
+                nextcurrentleft.Remove(next);
+                newpred.Add(next);
+                RecursivePredict(ref output, newpred, idx + 1, nextcurrentleft, currentfq);
+            }
+
         }
         public string GetKey()
         {

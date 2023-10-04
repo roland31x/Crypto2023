@@ -154,7 +154,7 @@ namespace MyCryptography
             bool foundsome = false;
             List<string> all = new List<string>();
 
-            var dictionary = WordList.CreateFromFiles(@"/dicts/en_US.dic");
+            var dictionary = WordList.CreateFromFiles(Directory.GetCurrentDirectory() + @"/dicts/en_US/en_US.dic");
 
             for (int i = 0; i < 'z' - 'a' + 1; i++)
             {

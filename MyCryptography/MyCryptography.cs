@@ -52,7 +52,7 @@ namespace MyCryptography
             0.01974d,
             0.00074d,
         };
-        const double MAXFQERROR = 0.0001d;
+        const double MAXFQERROR = 0.00001d;
         public MonoAlphabeticSubstitutionCipher()
         {
             int[] chars = new int['z' - 'a' + 1];

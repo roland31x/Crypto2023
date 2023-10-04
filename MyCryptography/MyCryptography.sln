@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCryptography", "MyCryptog
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaesarsCipher", "..\CaesarsCipher\CaesarsCipher.csproj", "{EF0021E1-07B9-4149-A7EC-AB3F713A22A5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NShiftCipher", "..\NShiftCipher\NShiftCipher.csproj", "{77B20528-98AD-44AB-94D0-0CD582977DA6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{EF0021E1-07B9-4149-A7EC-AB3F713A22A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF0021E1-07B9-4149-A7EC-AB3F713A22A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF0021E1-07B9-4149-A7EC-AB3F713A22A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77B20528-98AD-44AB-94D0-0CD582977DA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77B20528-98AD-44AB-94D0-0CD582977DA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77B20528-98AD-44AB-94D0-0CD582977DA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77B20528-98AD-44AB-94D0-0CD582977DA6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

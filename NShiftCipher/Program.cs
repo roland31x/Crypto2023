@@ -13,7 +13,7 @@ namespace NShiftCipher
             Console.WriteLine(encrypted);
             Console.WriteLine(shift.Decrypt(encrypted));
             Console.WriteLine();
-            Console.WriteLine(new CryptoAnalyzer<ShiftCipher>().Analyze(encrypted));
+            //Console.WriteLine(new CryptoAnalyzer<ShiftCipher>().Analyze(encrypted));
         }
     }
 }

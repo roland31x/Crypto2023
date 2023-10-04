@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Text;
 using WeCantSpell.Hunspell;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace MyCryptography
 {
@@ -21,6 +22,35 @@ namespace MyCryptography
     public class MonoAlphabeticSubstitutionCipher : Cipher
     {
         int[] Key;
+        float[] fq = new float[]
+        {
+            0.08167f,
+            0.01492f,
+            0.02782f,
+            0.04253f,
+            0.12702f,
+            0.02228f,
+            0.02015f,
+            0.06094f,
+            0.06966f,
+            0.00153f,
+            0.00772f,
+            0.04025f,
+            0.02406f,
+            0.06749f,
+            0.07507f,
+            0.01929f,
+            0.00095f,
+            0.05987f,
+            0.06327f,
+            0.09056f,
+            0.02758f,
+            0.00978f,
+            0.02360f,
+            0.00150f,
+            0.01974f,
+            0.00074f,
+        };             
         public MonoAlphabeticSubstitutionCipher()
         {
             int[] chars = new int['z' - 'a' + 1];
@@ -33,6 +63,22 @@ namespace MyCryptography
                 (chars[i], chars[random]) = (chars[random], chars[i]);
             }
             Key = chars;
+        }
+        string Decrypt(string Text, int[] Key)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < Text.Length; i++)
+            {
+                if (Text[i] >= LETTERS_START_LOWER && Text[i] <= LETTERS_END_LOWER)
+                    sb.Append((char)(Array.IndexOf(Key, Text[i]) + 'a'));
+                else if (Text[i] >= LETTERS_START_UPPER && Text[i] <= LETTERS_END_UPPER)
+                    sb.Append((char)(Array.IndexOf(Key, Text[i] + LOWER_TO_UPPER_DIFF) + 'A'));
+                else
+                    sb.Append(Text[i]);
+            }
+
+            return sb.ToString();
         }
         public override string Decrypt(string Text)
         {
@@ -69,7 +115,67 @@ namespace MyCryptography
         }
         public override CryptoAnalysisResult Analyze(string text)
         {
-            throw new NotImplementedException();
+            List<string> output = new List<string>
+            {
+                "This cipher takes a random permutation of the alphabet and replaces the characters with the permutation ones.",
+                "For this method we can use frequency analysis to determine the key ( permutation ) to decrypt the text.",
+                "Brute forcing this would take a long time since we'd have to check 26! number of permutations.",
+                "Trying to find the key by working out the letters based on the English dictionary character frequency.",
+            };
+            float[] currentfq = new float[fq.Length];
+            int total = 0;
+            string lowercase = text.ToLower();
+            
+            for(int i = 0; i < lowercase.Length; i++)
+            {
+                if (lowercase[i] >= LETTERS_START_LOWER && lowercase[i] <= LETTERS_END_LOWER)
+                {
+                    currentfq[lowercase[i] - 'a']++;
+                    total++;
+                }    
+            }
+            for(int i = 0; i < currentfq.Length; i++)
+            {
+                if(currentfq[i] != 0)
+                    currentfq[i] = currentfq[i] / total;
+            }
+            if(total < 300)
+            {
+                output.Add("The text provided is really short, the chance of decryption will be low...");
+            }
+            output.Add("");
+
+            int[] predictionkey = new int[Key.Length];
+            bool[] basefound = new bool[fq.Length];
+            bool[] newfqfound = new bool[currentfq.Length];
+
+            for(int basefq = 0; basefq < fq.Length; basefq++)
+            {
+                if (basefound[basefq])
+                    continue;
+                float bestdist = float.MaxValue;
+                int bestidx = -1;
+                for(int newfq = 0; newfq < currentfq.Length; newfq++)
+                {
+                    if (newfqfound[newfq])
+                        continue;                   
+                    float dist = fq[basefq] - currentfq[newfq];
+                    dist = Math.Abs(dist);
+                    if (dist < bestdist)
+                    {
+                        bestidx = newfq;
+                        bestdist = dist;
+                    }
+                        
+                }
+                predictionkey[basefq] = bestidx + 'a';
+                basefound[basefq] = true;
+                newfqfound[bestidx] = true;
+            }
+
+            output.Add(Decrypt(text, predictionkey));
+
+            return new CryptoAnalysisResult(typeof(MonoAlphabeticSubstitutionCipher), output);
         }
         public string GetKey()
         {

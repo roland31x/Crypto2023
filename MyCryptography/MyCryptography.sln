@@ -5,11 +5,7 @@ VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyCryptography", "MyCryptography.csproj", "{93625A8C-0545-4554-A4DA-FF267A27A170}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CaesarsCipher", "..\CaesarsCipher\CaesarsCipher.csproj", "{EF0021E1-07B9-4149-A7EC-AB3F713A22A5}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NShiftCipher", "..\NShiftCipher\NShiftCipher.csproj", "{77B20528-98AD-44AB-94D0-0CD582977DA6}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoSubtitutionCipher", "..\MonoSubtitutionCipher\MonoSubtitutionCipher.csproj", "{AB8967F1-C42F-425E-A585-D7669B8C8F37}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleTester", "..\NShiftCipher\ConsoleTester.csproj", "{77B20528-98AD-44AB-94D0-0CD582977DA6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,18 +17,10 @@ Global
 		{93625A8C-0545-4554-A4DA-FF267A27A170}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93625A8C-0545-4554-A4DA-FF267A27A170}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93625A8C-0545-4554-A4DA-FF267A27A170}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EF0021E1-07B9-4149-A7EC-AB3F713A22A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EF0021E1-07B9-4149-A7EC-AB3F713A22A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EF0021E1-07B9-4149-A7EC-AB3F713A22A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EF0021E1-07B9-4149-A7EC-AB3F713A22A5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{77B20528-98AD-44AB-94D0-0CD582977DA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{77B20528-98AD-44AB-94D0-0CD582977DA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77B20528-98AD-44AB-94D0-0CD582977DA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77B20528-98AD-44AB-94D0-0CD582977DA6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AB8967F1-C42F-425E-A585-D7669B8C8F37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AB8967F1-C42F-425E-A585-D7669B8C8F37}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AB8967F1-C42F-425E-A585-D7669B8C8F37}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AB8967F1-C42F-425E-A585-D7669B8C8F37}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

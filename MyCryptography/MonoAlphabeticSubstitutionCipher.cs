@@ -66,19 +66,7 @@ namespace MyCryptography
         }
         public override string Decrypt(string Text)
         {
-            StringBuilder sb = new StringBuilder();
-
-            for (int i = 0; i < Text.Length; i++)
-            {
-                if (Text[i] >= LETTERS_START_LOWER && Text[i] <= LETTERS_END_LOWER)
-                    sb.Append((char)(Array.IndexOf(Key, Text[i]) + 'a'));
-                else if (Text[i] >= LETTERS_START_UPPER && Text[i] <= LETTERS_END_UPPER)
-                    sb.Append((char)(Array.IndexOf(Key, Text[i] + LOWER_TO_UPPER_DIFF) + 'A'));
-                else
-                    sb.Append(Text[i]);
-            }
-
-            return sb.ToString();
+            return Decrypt(Text, Key);
         }
 
         public override string Encrypt(string plainText)

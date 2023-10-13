@@ -29,7 +29,7 @@ namespace MyCryptography
         }
         public override CryptoAnalysisResult Analyze(string text)
         {
-            return new CryptoAnalysisResult(typeof(PolyAlphabeticSubstitution),new List<string> { "Polyalphabetic subtition is nearly impossible to crack and needs manual analysis..." });
+            return new CryptoAnalysisResult(GetType(),new List<string> { "Polyalphabetic subtition is nearly impossible to crack and needs manual analysis..." });
         }
 
         public override string Encrypt(string Text)

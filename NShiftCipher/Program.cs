@@ -30,8 +30,11 @@ namespace ConsoleTesterApp
             JeffersonDisk jd = new JeffersonDisk(10);
             string en = jd.Encrypt("HELLOWORLD");
             Console.WriteLine(en);
-            string de = jd.Decrypt(en);
-            Console.WriteLine(de);
+            string[] de = jd.Decrypt(en);
+            foreach(string s in de)
+            {
+                Console.WriteLine(s);
+            }
         }
     }
 }

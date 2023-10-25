@@ -26,7 +26,7 @@ namespace MyCryptography
                 current.Add(0);
             }          
         }
-        string Solve(string text, int dir)
+        void Solve(string text)
         {
             text = text.ToUpper().Replace(" ", "");
             int idx = 0;
@@ -40,19 +40,33 @@ namespace MyCryptography
                         current[i]++;
                         current[i] %= disks[i].Length;
                     }
-                    sb.Append((char)disks[i][(current[i] + dir) % disks[i].Length]);
+                    
                 }
             }
-            return sb.ToString();
         }
 
         public string Encrypt(string text)
         {
-            return Solve(text, 1);
+            Solve(text);
+            int returnrow = Cipher.rng.Next(0, disks.Count);           
+            StringBuilder sb = new StringBuilder();
+            for(int i = 0; i < disks.Count; i++)
+                sb.Append((char)disks[i][(current[i] + returnrow) % disks[i].Length]);
+
+            return sb.ToString();
         }
-        public string Decrypt(string text)
+        public string[] Decrypt(string text)
         {
-            return Solve(text, -1);
+            Solve(text);
+            string[] toreturn = new string[26];
+            for(int t = 0; t < toreturn.Length; t++)
+            {
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < disks.Count; i++)
+                    sb.Append((char)disks[i][(current[i] + t) % disks[i].Length]);
+                toreturn[t] = sb.ToString();
+            }
+            return toreturn;
         }
             
     }

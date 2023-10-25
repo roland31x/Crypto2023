@@ -2,7 +2,7 @@
 {
     public abstract class Cipher
     {
-        protected static Random rng = new Random();
+        public static Random rng = new Random();
         protected const int LETTERS_START_LOWER = 'a';
         protected const int LETTERS_END_LOWER = 'z';
         protected const int LETTERS_START_UPPER = 'A';

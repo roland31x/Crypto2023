@@ -19,7 +19,7 @@ namespace MyCryptography
                 int[] chars = new int['z' - 'a' + 1];
                 for (int i = 'a'; i <= 'z'; i++)
                     chars[i - 'a'] = i;
-                for (int i = chars.Length; t >= 0; i--)
+                for (int i = chars.Length - 1; i >= 0; i--)
                 {
                     int random = rng.Next(0, i + 1);                
                     (chars[i], chars[random]) = (chars[random], chars[i]);

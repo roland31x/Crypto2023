@@ -30,7 +30,6 @@ namespace MyCryptography
         {
             text = text.ToUpper().Replace(" ", "");
             int idx = 0;
-            StringBuilder sb = new StringBuilder();
             while (idx < text.Length)
             {
                 for (int i = 0; i < disks.Count && idx < text.Length; i++, idx++)
@@ -39,8 +38,7 @@ namespace MyCryptography
                     {
                         current[i]++;
                         current[i] %= disks[i].Length;
-                    }
-                    
+                    }              
                 }
             }
         }

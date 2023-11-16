@@ -55,6 +55,7 @@ namespace CryptographyApp
                 ModeBox.Items.Add(cb);
             }
             ModeBox.SelectedItem = ModeBox.Items[0];
+            KeyBox.Text = key;
         }
 
         private void FileSelect_Click(object sender, RoutedEventArgs e)

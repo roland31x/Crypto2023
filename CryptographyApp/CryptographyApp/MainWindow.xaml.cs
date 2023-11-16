@@ -30,6 +30,7 @@ namespace CryptographyApp
         bool fileok = false;
         string? filepath;
         string key = "0123456789123456";
+        bool working = false;
         public MainWindow()
         {
             InitializeComponent();
@@ -74,23 +75,26 @@ namespace CryptographyApp
             }                          
         }
 
-        private void Decrypt_Click(object sender, RoutedEventArgs e)
+        private async void Decrypt_Click(object sender, RoutedEventArgs e)
         {
             if (selected != null && cipherselected != null && paddingselected != null && filepath != null)
-                Work(false);
+                await Work(false);
             else
                 InfoLabel.Content = "Unset parameters!";
         }
 
-        private void Encrypt_Click(object sender, RoutedEventArgs e)
+        private async void Encrypt_Click(object sender, RoutedEventArgs e)
         {
             if (selected != null && cipherselected != null && paddingselected != null && filepath != null)
-                Work(true);
+                await Work(true);
             else
                 InfoLabel.Content = "Unset parameters!";
         }
-        void Work(bool encrypt)
+        Task Work(bool encrypt)
         {
+            if (working)
+                return Task.CompletedTask;
+            working = true;
             FileStream fin = new FileStream(filepath, FileMode.Open, FileAccess.Read);
             string output = "result.bin";
             int idx = 0;
@@ -117,14 +121,15 @@ namespace CryptographyApp
                 len = fin.Read(bin, 0, 100);
                 encStream.Write(bin, 0, len);
                 rdlen = rdlen + len;
-                InfoLabel.Content = $"{rdlen} bytes processed";
+                App.Current.Dispatcher.Invoke(() => InfoLabel.Content = $"{rdlen} bytes processed");
             }
 
             encStream.Close();
             fout.Close();
             fin.Close();
 
-            InfoLabel.Content = $"File saved to: " + Directory.GetCurrentDirectory() + @"\" + output;
+            App.Current.Dispatcher.Invoke(() => InfoLabel.Content = $"File saved to: " + Directory.GetCurrentDirectory() + @"\" + output);
+            return Task.CompletedTask;
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

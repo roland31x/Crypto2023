@@ -28,7 +28,7 @@ namespace MyCryptography
         }
         string Work(string text, int[,] key, int dir)
         {
-            text = text.Replace("J", "I").Replace(" ", "").ToUpper();
+            text = text.ToUpper().Replace("J", "I").Replace(" ", "");
 
             StringBuilder sb = new StringBuilder();
 
@@ -52,13 +52,13 @@ namespace MyCryptography
 
                 if (ai == bi)
                 {
-                    RA = (char)key[ai, (5 + (aj + dir) % 5) % 5];
-                    RB = (char)key[bi, (5 + (bj + dir) % 5) % 5];                   
+                    RA = (char)key[ai, (5 + aj + dir) % 5];
+                    RB = (char)key[bi, (5 + bj + dir) % 5];                   
                 }
                 else if (aj == bj)
                 {
-                    RA = (char)key[(5 + (ai + dir) % 5) % 5, aj];
-                    RB = (char)key[(5 + (bi + dir) % 5) % 5, bj];
+                    RA = (char)key[(5 + ai + dir) % 5, aj];
+                    RB = (char)key[(5 + bi + dir) % 5, bj];
                 }
                 else
                 {
@@ -89,25 +89,39 @@ namespace MyCryptography
             int[,] k = new int[5, 5];
             text = text.ToUpper();
             text = text.Replace("J", "I");
+            text = text.Replace(" ", "");
 
-            List<int> values = new List<int>();
+           // List<int> values = new List<int>();
+            HashSet<int> values = new HashSet<int>();
             for (int i = 0; i < text.Length; i++)
             {
-                if (values.Contains(text[i]))
-                    continue;
+                //if (values.Contains(text[i]))
+                    //continue;
                 values.Add(text[i]);
             }
             for (int i = 'A'; i <= 'Z'; i++)
             {
                 if (i == 'J')
                     continue;
-                if (values.Contains(i))
-                    continue;
+               // if (values.Contains(i))
+                 //   continue;
                 values.Add(i);
             }
-            for (int i = 0; i < 5; i++)
-                for (int j = 0; j < 5; j++)
-                    k[i, j] = values[5 * i + j];
+            //for (int i = 0; i < 5; i++)
+               // for (int j = 0; j < 5; j++)
+                  //  k[i, j] = values[5 * i + j];
+            int ii = 0;
+            int jj = 0;
+            foreach(var item in values)
+            {
+                k[ii, jj] = item;
+                jj++;
+                if(jj >= 5)
+                {
+                    ii++;
+                    jj = 0;
+                }
+            }
 
             return k;
         }

@@ -46,7 +46,7 @@ namespace MyCryptography
         public string Encrypt(string text)
         {
             Solve(text);
-            int returnrow = Cipher.rng.Next(0, disks.Count);           
+            int returnrow = Cipher.rng.Next(1, disks.Count);           
             StringBuilder sb = new StringBuilder();
             for(int i = 0; i < disks.Count; i++)
                 sb.Append((char)disks[i][(current[i] + returnrow) % disks[i].Length]);
